@@ -11211,7 +11211,7 @@ var $author$project$Website$galleryTiles = _List_fromArray(
 	[
 		$author$project$Website$Image('maseltov-markdorf.jpg'),
 		$author$project$Website$Image('akkordeon.jpg'),
-		$author$project$Website$Video('big-buck-bunny_trailer.webm'),
+		$author$project$Website$Video('ForBiggerJoyrides.mp4'),
 		$author$project$Website$Image('kontrabass.jpg')
 	]);
 var $mdgriffith$elm_ui$Internal$Flag$bgColor = $mdgriffith$elm_ui$Internal$Flag$flag(8);
@@ -11808,12 +11808,14 @@ var $mdgriffith$elm_ui$Element$Border$shadow = function (almostShade) {
 			$mdgriffith$elm_ui$Internal$Model$formatBoxShadow(shade)));
 };
 var $author$project$Website$viewMediaTile = function (imageOrVideo) {
+	var tileWidth = 285;
+	var tileHeight = 176;
 	var commonAttributes = _List_fromArray(
 		[
 			$mdgriffith$elm_ui$Element$width(
-			$mdgriffith$elm_ui$Element$px(285)),
+			$mdgriffith$elm_ui$Element$px(tileWidth)),
 			$mdgriffith$elm_ui$Element$height(
-			$mdgriffith$elm_ui$Element$px(176)),
+			$mdgriffith$elm_ui$Element$px(tileHeight)),
 			$mdgriffith$elm_ui$Element$Border$shadow(
 			{
 				blur: 10,
@@ -11855,9 +11857,27 @@ var $author$project$Website$viewMediaTile = function (imageOrVideo) {
 							[
 								A2($elm$html$Html$Attributes$attribute, 'controls', 'true'),
 								A2($elm$html$Html$Attributes$attribute, 'id', 'video_in_gallery'),
-								A2($elm$html$Html$Attributes$attribute, 'src', url)
+								A2(
+								$elm$html$Html$Attributes$attribute,
+								'width',
+								$elm$core$String$fromInt(tileWidth)),
+								A2(
+								$elm$html$Html$Attributes$attribute,
+								'height',
+								$elm$core$String$fromInt(tileHeight))
 							]),
-						_List_Nil))));
+						_List_fromArray(
+							[
+								A3(
+								$elm$html$Html$node,
+								'source',
+								_List_fromArray(
+									[
+										A2($elm$html$Html$Attributes$attribute, 'src', url),
+										A2($elm$html$Html$Attributes$attribute, 'type', 'video/mp4')
+									]),
+								_List_Nil)
+							])))));
 	}
 };
 var $mdgriffith$elm_ui$Internal$Model$Padding = F5(
@@ -12082,7 +12102,7 @@ var $author$project$Website$view = function (model) {
 							$mdgriffith$elm_ui$Element$centerX,
 							$mdgriffith$elm_ui$Element$Font$letterSpacing(-4)
 						]),
-					$mdgriffith$elm_ui$Element$text('Jiddische Lieder aus der alten und neuen Welt.')),
+					$mdgriffith$elm_ui$Element$text('Jiddische Musik aus der alten und neuen Welt.')),
 					A2(
 					$mdgriffith$elm_ui$Element$row,
 					_List_fromArray(
@@ -12107,7 +12127,7 @@ var $author$project$Website$view = function (model) {
 									$mdgriffith$elm_ui$Element$el,
 									_List_fromArray(
 										[$mdgriffith$elm_ui$Element$alignRight]),
-									$mdgriffith$elm_ui$Element$text('Nächstes Event:'))
+									$mdgriffith$elm_ui$Element$text('Nächstes Konzert:'))
 								])),
 							A2(
 							$mdgriffith$elm_ui$Element$column,

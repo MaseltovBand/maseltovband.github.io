@@ -32,7 +32,7 @@ galleryTiles : List Media
 galleryTiles =
     [ Image "maseltov-markdorf.jpg"
     , Image "akkordeon.jpg"
-    , Video "big-buck-bunny_trailer.webm"
+    , Video "ForBiggerJoyrides.mp4" -- | Use mp4 here! everything else can not be displayed on safari..
     , Image "kontrabass.jpg"
     ]
 
@@ -96,9 +96,15 @@ viewImpressum =
 viewMediaTile : Media -> Element msg
 viewMediaTile imageOrVideo =
     let
+        tileWidth =
+            285
+
+        tileHeight =
+            176
+
         commonAttributes =
-            [ width (px 285)
-            , height (px 176)
+            [ width (px tileWidth)
+            , height (px tileHeight)
             , Border.shadow
                 { offset = ( 2, 2 )
                 , blur = 10
@@ -123,14 +129,14 @@ viewMediaTile imageOrVideo =
                         node "video"
                             [ attribute "controls" "true"
                             , attribute "id" "video_in_gallery"
-                            , attribute "src" url
+                            , attribute "width" <| String.fromInt tileWidth
+                            , attribute "height" <| String.fromInt tileHeight
                             ]
-                            [{- node "source"
-                                [
-                                , attribute "type" "video/webm"
+                            [ node "source"
+                                [ attribute "src" url
+                                , attribute "type" "video/mp4"
                                 ]
                                 []
-                             -}
                             ]
                     )
 
@@ -172,7 +178,7 @@ view model =
                 , centerX
                 , Font.letterSpacing -4
                 ]
-                (text "Jiddische Lieder aus der alten und neuen Welt.")
+                (text "Jiddische Musik aus der alten und neuen Welt.")
             , -- Upcoming Events..
               row
                 [ width fill
@@ -180,7 +186,7 @@ view model =
                 , Font.letterSpacing -2
                 ]
                 [ column [ alignTop, width (fillPortion 1) ]
-                    [ el [ alignRight ] (text "Nächstes Event:")
+                    [ el [ alignRight ] (text "Nächstes Konzert:")
                     ]
                 , column [ width (fillPortion 1), spacing 3 ]
                     [ el [ alignLeft, Font.strike ] (text "Meersburg")
