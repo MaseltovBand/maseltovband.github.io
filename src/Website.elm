@@ -75,6 +75,23 @@ downIcon =
                 Icon.chevronDown
 
 
+email : String
+email =
+    "example@example.com"
+
+
+viewImpressum =
+    column [ spacing 8, alignBottom ]
+        [ text "Max Musterman ist verantwortlich"
+        , text "70111 Stuttgart"
+        , link []
+            { url = "mailto:" ++ email
+            , label = text ("E-Mail: " ++ email)
+            }
+        , el [ Font.bold ] (text "Es werden keine Daten gespeichert.")
+        ]
+
+
 view : Model -> Html Msg
 view model =
     Element.layout
@@ -126,33 +143,46 @@ view model =
                     , el [ alignLeft, Font.italic, Font.size 18 ] (text "Coronapause...")
                     ]
                 ]
-            , row
+            , -- Impressum and Contact.. Impressum may open, Contact only forwards to email.
+              row
                 [ height fill
                 , padding 5
                 , spacing 30
                 , Font.size 16
                 , Font.color <| rgba 0 0 0 0.6
                 ]
-                [ Input.button [ alignLeft, alignBottom ]
-                    { onPress = Just (SetImpressumOpen <| not model.impressumIsOpen)
-                    , label =
-                        row [ alignLeft, alignBottom, spacing 3 ]
-                            [ el []
-                                (if model.impressumIsOpen then
-                                    downIcon
+                [ -- Impressum: Show/Hide button and the content are stacked vertically..
+                  column [ alignLeft, alignBottom, height fill, spacing 5 ]
+                    [ if model.impressumIsOpen then
+                        viewImpressum
 
-                                 else
-                                    Element.none
-                                )
-                            , el [] (text "Impressum")
-                            ]
-                    }
+                      else
+                        Element.none
+                    , Input.button
+                        [ alignLeft, alignBottom ]
+                        { onPress = Just (SetImpressumOpen <| not model.impressumIsOpen)
+                        , label =
+                            row [ alignLeft, alignBottom, spacing 3 ]
+                                [ el []
+                                    (if model.impressumIsOpen then
+                                        downIcon
+
+                                     else
+                                        Element.none
+                                    )
+                                , el [] (text "Impressum")
+                                ]
+                        }
+                    ]
                 , Input.button [ alignLeft, alignBottom ]
                     { onPress = Just (SetImpressumOpen False)
                     , label =
                         row [ alignLeft, alignBottom, spacing 3 ]
                             [ el [] mailIcon
-                            , el [] (text "Kontakt")
+                            , link []
+                                { url = "mailto:" ++ email
+                                , label = text "Kontakt"
+                                }
                             ]
                     }
                 ]
