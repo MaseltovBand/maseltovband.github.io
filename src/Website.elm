@@ -11,7 +11,8 @@ import Element.Events exposing (onClick)
 import Element.Font as Font
 import Element.Input as Input
 import FeatherIcons as Icon
-import Html exposing (Html)
+import Html exposing (Html, node)
+import Html.Attributes exposing (attribute)
 
 
 type Media
@@ -21,19 +22,18 @@ type Media
 
 type alias Model =
     { impressumIsOpen : Bool
-    , gallery : List Media
     }
 
 
 {-| The static set of images or videos on the frontpage.
 Actually this doesn't even need to be inside the model, as it wont change from user input..
 -}
-gallery : List Media
-gallery =
+galleryTiles : List Media
+galleryTiles =
     [ Image "maseltov-markdorf.jpg"
-    , Image "accordeon.jpg"
-    , Image "other-placeholder.jpg"
-    , Video "bugs-bunny.webm"
+    , Image "akkordeon.jpg"
+    , Video "big-buck-bunny_trailer.webm"
+    , Image "kontrabass.jpg"
     ]
 
 
@@ -41,9 +41,7 @@ gallery =
 -}
 init : () -> ( Model, Cmd msg )
 init _ =
-    ( { impressumIsOpen = False
-      , gallery = gallery
-      }
+    ( { impressumIsOpen = False }
     , Cmd.none
     )
 
@@ -80,6 +78,7 @@ email =
     "example@example.com"
 
 
+viewImpressum : Element msg
 viewImpressum =
     column [ spacing 8, alignBottom ]
         [ text "Max Musterman ist verantwortlich"
@@ -90,6 +89,50 @@ viewImpressum =
             }
         , el [ Font.bold ] (text "Es werden keine Daten gespeichert.")
         ]
+
+
+{-| view one tile which is either an image or a video, but both from same size
+-}
+viewMediaTile : Media -> Element msg
+viewMediaTile imageOrVideo =
+    let
+        commonAttributes =
+            [ width (px 285)
+            , height (px 176)
+            , Border.shadow
+                { offset = ( 2, 2 )
+                , blur = 10
+                , size = 4
+                , color = rgba 0 0 0 0.1
+                }
+            ]
+    in
+    case imageOrVideo of
+        Image url ->
+            Element.el [ width (fillPortion 1) ] <|
+                Element.image commonAttributes
+                    { src = url
+                    , description = ""
+                    }
+
+        Video url ->
+            Element.el [ width (fillPortion 1) ] <|
+                Element.el commonAttributes
+                    (Element.html <|
+                        -- Custom html5 element.. https://www.w3schools.com/tags/tag_video.asp
+                        node "video"
+                            [ attribute "controls" "true"
+                            , attribute "id" "video_in_gallery"
+                            , attribute "src" url
+                            ]
+                            [{- node "source"
+                                [
+                                , attribute "type" "video/webm"
+                                ]
+                                []
+                             -}
+                            ]
+                    )
 
 
 view : Model -> Html Msg
@@ -116,7 +159,8 @@ view model =
 
             -- , explain Debug.todo
             ]
-            [ el
+            [ -- Headline
+              el
                 [ Font.size 64
                 , centerX
                 , Font.letterSpacing -5
@@ -129,7 +173,8 @@ view model =
                 , Font.letterSpacing -4
                 ]
                 (text "Jiddische Lieder aus der alten und neuen Welt.")
-            , row
+            , -- Upcoming Events..
+              row
                 [ width fill
                 , spacing 50
                 , Font.letterSpacing -2
@@ -143,6 +188,9 @@ view model =
                     , el [ alignLeft, Font.italic, Font.size 18 ] (text "Coronapause...")
                     ]
                 ]
+            , -- Gallery
+              wrappedRow [ spacing 50, paddingXY 100 0, centerX, width fill, height fill ]
+                (List.map viewMediaTile galleryTiles)
             , -- Impressum and Contact.. Impressum may open, Contact only forwards to email.
               row
                 [ height fill
@@ -174,7 +222,8 @@ view model =
                                 ]
                         }
                     ]
-                , Input.button [ alignLeft, alignBottom ]
+                , -- Email
+                  Input.button [ alignLeft, alignBottom ]
                     { onPress = Just (SetImpressumOpen False)
                     , label =
                         row [ alignLeft, alignBottom, spacing 3 ]

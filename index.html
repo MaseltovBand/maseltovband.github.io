@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Maseltov</title>
+    <title>𝄞 Maseltov</title>
     <meta name="description" content="Maseltov - Jiddische Lieder aus der alten und neuen Welt.">
     <meta name="author" content="Maseltov">
     <script src="elm.js"></script>
@@ -13,7 +13,20 @@
 </head>
 
 <body>
-    <script>var app = Elm.Website.init({ node: document.getElementById("elm-node") });</script>
+    <script>
+        var app = Elm.Website.init({ node: document.getElementById("elm-node") });
+
+        function addListenerForVideoTile() {
+            var video = document.getElementById("video_in_gallery");
+            video.addEventListener("mouseenter", function () {
+                video.play();
+            });
+            video.addEventListener("mouseleave", function () {
+                video.pause();
+            });
+        }
+        window.requestAnimationFrame(addListenerForVideoTile());
+    </script>
 </body>
 
 </html>
