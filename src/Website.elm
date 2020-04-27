@@ -80,7 +80,7 @@ email =
 
 viewImpressum : Element msg
 viewImpressum =
-    column [ spacing 8, alignBottom ]
+    column [ padding 5, spacing 8, alignBottom ]
         [ text "Max Musterman ist verantwortlich"
         , text "70111 Stuttgart"
         , link []
@@ -201,13 +201,17 @@ view model =
                 ]
                 [ -- Impressum: Show/Hide button and the content are stacked vertically..
                   column [ alignLeft, alignBottom, height fill, spacing 5 ]
-                    [ if model.impressumIsOpen then
-                        viewImpressum
+                    [ Input.button
+                        [ alignLeft
+                        , alignBottom
+                        , above
+                            (if model.impressumIsOpen then
+                                viewImpressum
 
-                      else
-                        Element.none
-                    , Input.button
-                        [ alignLeft, alignBottom ]
+                             else
+                                Element.none
+                            )
+                        ]
                         { onPress = Just (SetImpressumOpen <| not model.impressumIsOpen)
                         , label =
                             row [ alignLeft, alignBottom, spacing 3 ]
